@@ -7,6 +7,7 @@ import UploadArea from "./UploadArea"
 import MarkdownRenderer from "./MarkdownRenderer"
 import ZoomableImage from "./ZoomableImage"
 import { FiEye, FiRefreshCw, FiUpload } from "react-icons/fi"
+import Swal from "sweetalert2"
 
 export const FileUpload = () => {
   const [file, setFile] = useState<File | null>(null)
@@ -50,9 +51,38 @@ export const FileUpload = () => {
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
-    if (files && files[0]) {
-      setFile(files[0])
-      setFilePreview(URL.createObjectURL(files[0])) // Create preview URL
+
+    if (files) {
+      // Validate file type (ensure it's an image)
+      const validImageTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/gif",
+        "image/webp",
+      ]
+      if (!validImageTypes.includes(files[0].type)) {
+        Swal.fire({
+          icon: "error",
+          title: "Invalid file type",
+          text: "Only image files are allowed (JPEG, PNG, GIF, WebP)",
+        })
+        return
+      }
+
+      // Validate file size (5MB max)
+      const maxFileSize = 5 * 1024 * 1024 // 5 MB
+      if (files[0].size > maxFileSize) {
+        Swal.fire({
+          icon: "error",
+          title: "File too large",
+          text: "File size exceeds the 5MB limit.",
+        })
+        return
+      }
+      if (files && files[0]) {
+        setFile(files[0])
+        setFilePreview(URL.createObjectURL(files[0])) // Create preview URL
+      }
     }
   }
 
@@ -124,6 +154,15 @@ export const FileUpload = () => {
               >
                 <FiUpload className="mr-2" /> {/* Upload Icon */}
                 Upload
+              </button>
+            )}
+            {!fileId && (
+              <button
+                onClick={handleNewUpload}
+                className="px-4 mt-4 flex items-center uppercase py-2 tracking-widest outline-none bg-gray-600 text-white rounded hover:bg-gray-700 transform hover:scale-105 transition duration-300"
+              >
+                <FiRefreshCw className="mr-2" /> {/* Refresh Icon */}
+                Cancel
               </button>
             )}
 

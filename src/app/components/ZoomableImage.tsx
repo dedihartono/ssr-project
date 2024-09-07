@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { useState } from "react"
 
 interface ZoomableImageProps {
@@ -19,10 +20,12 @@ const ZoomableImage: React.FC<ZoomableImageProps> = ({ src, alt }) => {
   return (
     <div>
       {/* Zoom on Hover */}
-      <img
+      <Image
         src={src}
         alt={alt}
-        className="w-full h-full object-cover rounded-md max-w-xs mb-4 transition-transform duration-300 ease-in-out transform hover:scale-110 cursor-pointer"
+        width={400} // Set an appropriate width for the image
+        height={300} // Set an appropriate height for the image
+        className="object-cover rounded-md max-w-xs mb-4 transition-transform duration-300 ease-in-out transform hover:scale-110 cursor-pointer"
         onClick={openFullscreen}
       />
 
@@ -39,9 +42,11 @@ const ZoomableImage: React.FC<ZoomableImageProps> = ({ src, alt }) => {
             >
               &times;
             </button>
-            <img
+            <Image
               src={src}
               alt={alt}
+              width={400} // Set an appropriate width for the image
+              height={300} // Set an appropriate height for the image
               className="max-w-full max-h-full object-contain"
             />
           </div>

@@ -1,8 +1,8 @@
-import { useState } from 'react'
-import ReactMarkdown from 'react-markdown'
-import rehypeRaw from 'rehype-raw'
-import rehypeHighlight from 'rehype-highlight'
-import { FiCopy, FiCheck } from 'react-icons/fi'
+import { useState } from "react"
+import ReactMarkdown from "react-markdown"
+import rehypeRaw from "rehype-raw"
+import rehypeHighlight from "rehype-highlight"
+import { FiCopy, FiCheck } from "react-icons/fi"
 
 interface MarkdownRendererProps {
   markdown: string
@@ -29,7 +29,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ markdown }) => {
         <code>{children}</code>
       </pre>
       <button
-        onClick={() => handleCopy(children?.toString() || '', index)}
+        onClick={() => handleCopy(children?.toString() || "", index)}
         className="absolute top-2 right-2 bg-gray-800 text-white p-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
       >
         {copied[index] ? <FiCheck /> : <FiCopy />}
@@ -39,7 +39,6 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ markdown }) => {
 
   return (
     <ReactMarkdown
-      children={markdown}
       rehypePlugins={[rehypeRaw, rehypeHighlight]}
       components={{
         code({
@@ -47,8 +46,8 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ markdown }) => {
           className,
           children,
           ...props
-        }: React.ComponentPropsWithoutRef<'code'> & { inline?: boolean }) {
-          const match = /language-(\w+)/.exec(className || '')
+        }: React.ComponentPropsWithoutRef<"code"> & { inline?: boolean }) {
+          const match = /language-(\w+)/.exec(className || "")
           const codeIndex = Math.random() // Generate a unique index for each code block
 
           return !inline && match ? (
@@ -62,7 +61,9 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ markdown }) => {
           )
         },
       }}
-    />
+    >
+      {markdown}
+    </ReactMarkdown>
   )
 }
 
